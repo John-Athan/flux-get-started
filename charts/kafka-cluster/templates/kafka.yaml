@@ -151,7 +151,7 @@ spec:
     jvmOptions:
       gcLoggingEnabled: false
     storage:
-      type: persistent-claim
+      type: ephemeral
       size: {{ .Values.zookeeper.storage.size }}
       deleteClaim: false
   entityOperator:
