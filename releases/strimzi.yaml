@@ -3,7 +3,7 @@ apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
   name: strimzi
-  namespace: kafka
+  namespace: strimzi
 spec:
   releaseName: strimzi
   chart:
@@ -14,86 +14,4 @@ spec:
     watchNamespaces:
       - kafka
       - second-kafka
-    image:
-      repository: strimzi
-      name: operator
-      tag: 0.17.0
-      imagePullPolicy: IfNotPresent
-    logLevel: INFO
-    fullReconciliationIntervalMs: 120000
-    operationTimeoutMs: 300000
-    zookeeper:
-      image:
-        repository: strimzi
-        name: kafka
-        tagPrefix: 0.17.0
-    kafka:
-      image:
-        repository: strimzi
-        name: kafka
-        tagPrefix: 0.17.0
-    kafkaConnect:
-      image:
-        repository: strimzi
-        name: kafka
-        tagPrefix: 0.17.0
-    kafkaConnects2i:
-      image:
-        repository: strimzi
-        name: kafka
-        tagPrefix: 0.17.0
-    topicOperator:
-      image:
-        repository: strimzi
-        name: operator
-        tag: 0.17.0
-    userOperator:
-      image:
-        repository: strimzi
-        name: operator
-        tag: 0.17.0
-    kafkaInit:
-      image:
-        repository: strimzi
-        name: operator
-        tag: 0.17.0
-    tlsSidecarZookeeper:
-      image:
-        repository: strimzi
-        name: kafka
-        tagPrefix: 0.17.0
-    tlsSidecarKafka:
-      image:
-        repository: strimzi
-        name: kafka
-        tagPrefix: 0.17.0
-    tlsSidecarEntityOperator:
-      image:
-        repository: strimzi
-        name: kafka
-        tagPrefix: 0.17.0
-    kafkaMirrorMaker:
-      image:
-        repository: strimzi
-        name: kafka
-        tagPrefix: 0.17.0
-    kafkaBridge:
-      image:
-        repository: strimzi
-        name: kafka-bridge
-        tag: 0.17.0
-    resources:
-      limits:
-        memory: 1024Mi
-        cpu: 1000m
-      requests:
-        memory: 512Mi
-        cpu: 200m
-    livenessProbe:
-      initialDelaySeconds: 10
-      periodSeconds: 30
-    readinessProbe:
-      initialDelaySeconds: 10
-      periodSeconds: 30
-    createGlobalResources: true
 ---
