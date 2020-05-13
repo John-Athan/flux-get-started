@@ -126,15 +126,6 @@ spec:
           quantile: "0.$4"
     jvmOptions:
       gcLoggingEnabled: false
-  {{- if .Values.resources}}
-    resources:
-      requests:
-        cpu: {{ .Values.kafka.resources.requests.cpu }}
-        memory: {{ .Values.kafka.resources.requests.memory }}
-      limits:
-        cpu: {{ .Values.kafka.resources.limits.cpu }}
-        memory: {{ .Values.kafka.resources.limits.memory }}
-  {{- end}}
 {{- if .Values.kafka.nodeSelectorTerms }}
     template:
       pod:
@@ -172,13 +163,6 @@ spec:
       type: persistent-claim
       size: {{ .Values.zookeeper.storage.size }}
       deleteClaim: false
-    resources:
-      requests:
-        cpu: {{ .Values.zookeeper.resources.requests.cpu }}
-        memory: {{ .Values.zookeeper.resources.requests.memory }}
-      limits:
-        cpu: {{ .Values.zookeeper.resources.limits.cpu }}
-        memory: {{ .Values.zookeeper.resources.limits.memory }}
 {{- if .Values.zookeeper.nodeSelectorTerms }}    
     template:
       pod:
