@@ -30,8 +30,6 @@ spec:
         deleteClaim: false
       {{- end }}
     metrics:
-      # Inspired by config from Kafka 2.0.0 example rules:
-      # https://github.com/prometheus/jmx_exporter/blob/master/example_configs/kafka-2_0_0.yml
       lowercaseOutputName: true
       rules:
       # Special cases and very specific rules
@@ -149,8 +147,6 @@ spec:
   zookeeper:
     replicas: {{ .Values.zookeeper.replicaCount }}
     metrics:
-      # Inspired by Zookeeper rules
-      # https://github.com/prometheus/jmx_exporter/blob/master/example_configs/zookeeper.yaml
       lowercaseOutputName: true
       rules:
       # replicated Zookeeper
