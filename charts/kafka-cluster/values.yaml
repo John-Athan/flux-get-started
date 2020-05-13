@@ -1,0 +1,41 @@
+#########
+# https://intern.ippen-digital.de/confluence/display/DS/Deploying+a+Kafka%28-Connect%29+Cluster+on+Kubernetes
+#########
+
+kafka:
+  version: 2.2.1
+  replicaCount: 3
+  listeners:
+    plain: {}
+    tls: {}
+  # NOTE: Large numbers have to be quoted as the templating will rewrite them in scientific notation otherwise
+  config: {}
+
+  storage:
+    type: jbod
+    volumeCount: "1" # NOTE volumeCount has to be quoted for now
+    size: ""
+
+  resources: {}
+  nodeSelectorTerms:
+    - matchExpressions:
+        - key: kubernetes.io/lifecycle
+          operator: In
+          values:
+            - ondemand
+
+
+zookeeper:
+  replicaCount: 3
+  storage:
+    size: 2Gi
+  resources:
+    requests:
+      cpu: "1"
+      memory: 1Gi
+  nodeSelectorTerms:
+    - matchExpressions:
+        - key: kubernetes.io/lifecycle
+          operator: In
+          values:
+            - ondemand

@@ -1,0 +1,18 @@
+apiVersion: v1
+name: bi-kafka-strimzi-kafka-cluster
+version: 1.0.0
+appVersion: 0.12.0-2.2.1
+description: A Kafka Cluster managed by strimzi-cluster-operator
+keywords:
+  - Business-Intelligence
+  - Kafka
+  - Strimzi
+sources:
+  -  https://github.com/strimzi
+maintainers:
+  - name: Stephan Stiefel
+    email: stephan.stiefel@ippen-digital.de
+  - name: Florian Wirth
+    email: florian.wirth@ippen-digital.de
+  - name: Luca Ricchi
+    email: luca.ricchi@ippen-digital.de
