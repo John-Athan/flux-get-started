@@ -11,21 +11,8 @@ kafka:
     volumeCount: "1" # NOTE volumeCount has to be quoted for now
     size: ""
 
-  nodeSelectorTerms:
-    - matchExpressions:
-        - key: kubernetes.io/lifecycle
-          operator: In
-          values:
-            - ondemand
-
 
 zookeeper:
   replicaCount: 1
   storage:
     size: 2Gi
-  nodeSelectorTerms:
-    - matchExpressions:
-        - key: kubernetes.io/lifecycle
-          operator: In
-          values:
-            - ondemand

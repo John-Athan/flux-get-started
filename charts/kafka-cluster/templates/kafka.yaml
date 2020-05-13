@@ -126,15 +126,6 @@ spec:
           quantile: "0.$4"
     jvmOptions:
       gcLoggingEnabled: false
-{{- if .Values.kafka.nodeSelectorTerms }}
-    template:
-      pod:
-        affinity:
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-{{ .Values.kafka.nodeSelectorTerms | toYaml | indent 14  }}
-{{- end}}
   zookeeper:
     replicas: {{ .Values.zookeeper.replicaCount }}
     metrics:
@@ -163,15 +154,6 @@ spec:
       type: persistent-claim
       size: {{ .Values.zookeeper.storage.size }}
       deleteClaim: false
-{{- if .Values.zookeeper.nodeSelectorTerms }}    
-    template:
-      pod:
-        affinity:
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-{{ .Values.zookeeper.nodeSelectorTerms | toYaml | indent 14  }}
-{{- end}}
   entityOperator:
     topicOperator: {}
     userOperator: {}
