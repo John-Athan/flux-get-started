@@ -1,5 +1,5 @@
 kafka:
-  version: 2.2.1
+  version: 2.4.0
   replicaCount: 3
   listeners:
     plain: {}
@@ -20,7 +20,7 @@ kafka:
 
 
 zookeeper:
-  replicaCount: 3
+  replicaCount: 1
   storage:
     size: 2Gi
   nodeSelectorTerms:
