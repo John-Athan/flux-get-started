@@ -8,7 +8,7 @@ watchAnyNamespace: false
 image:
   repository: strimzi
   name: operator
-  tag: latest
+  tag: 0.17.0
 logLevel: INFO
 fullReconciliationIntervalMs: 120000
 operationTimeoutMs: 300000
@@ -26,52 +26,57 @@ zookeeper:
   image:
     repository: strimzi
     name: kafka
-    tagPrefix: latest
+    tagPrefix: 0.17.0
 kafka:
   image:
     repository: strimzi
     name: kafka
-    tagPrefix: latest
+    tagPrefix: 0.17.0
 kafkaConnect:
   image:
     repository: strimzi
     name: kafka
-    tagPrefix: latest
+    tagPrefix: 0.17.0
 kafkaConnects2i:
   image:
     repository: strimzi
     name: kafka
-    tagPrefix: latest
+    tagPrefix: 0.17.0
 topicOperator:
   image:
     repository: strimzi
     name: operator
-    tag: latest
+    tag: 0.17.0
 userOperator:
   image:
     repository: strimzi
     name: operator
-    tag: latest
+    tag: 0.17.0
 kafkaInit:
   image:
     repository: strimzi
     name: operator
-    tag: latest
+    tag: 0.17.0
+tlsSidecarZookeeper:
+  image:
+    repository: strimzi
+    name: kafka
+    tagPrefix: 0.17.0
 tlsSidecarKafka:
   image:
     repository: strimzi
     name: kafka
-    tagPrefix: latest
+    tagPrefix: 0.17.0
 tlsSidecarEntityOperator:
   image:
     repository: strimzi
     name: kafka
-    tagPrefix: latest
+    tagPrefix: 0.17.0
 kafkaMirrorMaker:
   image:
     repository: strimzi
     name: kafka
-    tagPrefix: latest
+    tagPrefix: 0.17.0
 kafkaBridge:
   image:
     repository: strimzi
@@ -81,27 +86,17 @@ kafkaExporter:
   image:
     repository: strimzi
     name: kafka
-    tagPrefix: latest
+    tagPrefix: 0.17.0
 jmxTrans:
   image:
     repository: strimzi
     name: jmxtrans
-    tag: latest
+    tag: 0.17.0
 kafkaMirrorMaker2:
   image:
     repository: strimzi
     name: kafka
-    tagPrefix: latest
-cruiseControl:
-  image:
-    repository: strimzi
-    name: kafka
-    tagPrefix: latest
-tlsSidecarCruiseControl:
-  image:
-    repository: strimzi
-    name: kafka
-    tagPrefix: latest
+    tagPrefix: 0.17.0
 resources:
   limits:
     memory: 256Mi
