@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: strimzi-cluster-operator
+  name: {{ .Release.Name }}-strimzi-cluster-operator
   labels:
     app: {{ template "strimzi.name" . }}
     chart: {{ template "strimzi.chart" . }}
