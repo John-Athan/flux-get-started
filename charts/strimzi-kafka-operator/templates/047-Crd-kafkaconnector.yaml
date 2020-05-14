@@ -2,43 +2,31 @@
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
-  name: kafkatopics.kafka.strimzi.io
+  name: kafkaconnectors.kafka.strimzi.io
   labels:
     app: '{{ template "strimzi.name" . }}'
     strimzi.io/crd-install: "true"
     chart: '{{ template "strimzi.chart" . }}'
-    component: kafkatopics.kafka.strimzi.io-crd
+    component: kafkaconnectors.kafka.strimzi.io-crd
     release: '{{ .Release.Name }}'
     heritage: '{{ .Release.Service }}'
 spec:
   group: kafka.strimzi.io
   versions:
-  - name: v1beta1
-    served: true
-    storage: true
   - name: v1alpha1
     served: true
-    storage: false
-  version: v1beta1
+    storage: true
+  version: v1alpha1
   scope: Namespaced
   names:
-    kind: KafkaTopic
-    listKind: KafkaTopicList
-    singular: kafkatopic
-    plural: kafkatopics
+    kind: KafkaConnector
+    listKind: KafkaConnectorList
+    singular: kafkaconnector
+    plural: kafkaconnectors
     shortNames:
-    - kt
+    - kctr
     categories:
     - strimzi
-  additionalPrinterColumns:
-  - name: Partitions
-    description: The desired number of partitions in the topic
-    JSONPath: .spec.partitions
-    type: integer
-  - name: Replication factor
-    description: The desired number of replicas of each partition
-    JSONPath: .spec.replicas
-    type: integer
   subresources:
     status: {}
   validation:
@@ -47,30 +35,21 @@ spec:
         spec:
           type: object
           properties:
-            partitions:
+            class:
+              type: string
+              description: The Class for the Kafka Connector.
+            tasksMax:
               type: integer
               minimum: 1
-              description: The number of partitions the topic should have. This cannot
-                be decreased after topic creation. It can be increased after topic
-                creation, but it is important to understand the consequences that
-                has, especially for topics with semantic partitioning.
-            replicas:
-              type: integer
-              minimum: 1
-              maximum: 32767
-              description: The number of replicas the topic should have.
+              description: The maximum number of tasks for the Kafka Connector.
             config:
               type: object
-              description: The topic configuration.
-            topicName:
-              type: string
-              description: The name of the topic. When absent this will default to
-                the metadata.name of the topic. It is recommended to not set this
-                unless the topic name is not a valid Kubernetes resource name.
-          required:
-          - partitions
-          - replicas
-          description: The specification of the topic.
+              description: 'The Kafka Connector configuration. The following properties
+                cannot be set: connector.class, tasks.max.'
+            pause:
+              type: boolean
+              description: Whether the connector should be paused. Defaults to false.
+          description: The specification of the Kafka Connector.
         status:
           type: object
           properties:
@@ -105,5 +84,9 @@ spec:
               type: integer
               description: The generation of the CRD that was last reconciled by the
                 operator.
-          description: The status of the topic.
+            connectorStatus:
+              type: object
+              description: The connector status, as reported by the Kafka Connect
+                REST API.
+          description: The status of the Kafka Connector.
 {{- end -}}
