@@ -1,8 +1,9 @@
+---
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
   name: strimzi
-  namespace: strimzi-operator
+  namespace: strimzi-cluster-operator
 spec:
   releaseName: strimzi
   chart:
@@ -13,3 +14,5 @@ spec:
     watchNamespaces:
       - kafka
       - second-kafka
+    logLevel: INFO
+---
