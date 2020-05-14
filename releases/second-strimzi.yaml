@@ -12,3 +12,4 @@ spec:
   values:
     watchNamespaces:
       - second-kafka
+    createGlobalResources: true

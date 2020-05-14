@@ -11,7 +11,7 @@ metadata:
   {{- if $root.Values.watchAnyNamespace }}
   name: strimzi-cluster-operator-namespaced
   {{- else }}
-  name: {{ .Release.Name }}-strimzi-cluster-operator
+  name: strimzi-cluster-operator
   {{- end }}
   namespace: {{ . }}
   labels:
