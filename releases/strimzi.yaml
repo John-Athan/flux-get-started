@@ -12,4 +12,3 @@ spec:
   values:
     watchNamespaces:
       - kafka
-      - second-kafka
