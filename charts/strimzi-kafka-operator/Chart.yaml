@@ -1,8 +1,7 @@
 apiVersion: v1
-appVersion: "0.1.0"
-description: "Strimzi: Kafka as a Service"
-name: strimzi-kafka-operator
-version: 0.1.0
+appVersion: 0.12.0-2.2.1
+description: 'Strimzi: Kafka as a Service'
+home: http://strimzi.io/
 icon: https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/documentation/logo/strimzi_logo.png
 keywords:
 - kafka
@@ -12,10 +11,11 @@ keywords:
 - messaging
 - datastore
 - topic
-home: http://strimzi.io/
-sources:
-- https://github.com/strimzi/strimzi-kafka-operator
 maintainers:
 - name: ppatierno
 - name: scholzj
 - name: tombentley
+name: strimzi-kafka-operator
+sources:
+- https://github.com/strimzi/strimzi-kafka-operator
+version: 1.0.0
