@@ -11,8 +11,8 @@ spec:
     path: charts/kafka-cluster
   values:
     kafka:
-      version: 2.2.0
-      replicaCount: 2
+      version: 2.4.0
+      replicaCount: 1
       storage:
         size: "2Gi"
       config:
