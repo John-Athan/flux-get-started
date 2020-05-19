@@ -65,3 +65,7 @@ spec:
 {{ toYaml .Values.resources | indent 12 }}
   strategy:
     type: Recreate
+  selector:
+    matchLabels:
+      name: strimzi-cluster-operator
+      strimzi.io/kind: cluster-operator
