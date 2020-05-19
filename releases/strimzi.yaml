@@ -9,7 +9,7 @@ spec:
   chart:
     git: https://github.com/John-Athan/flux-get-started.git
     ref: master
-    path: charts/strimzi-kafka-operator-17
+    path: charts/strimzi-kafka-operator-15
   values:
     watchNamespaces:
       - kafka
