@@ -1,10 +1,11 @@
 {{- if .Values.createGlobalResources -}}
-apiVersion: apiextensions.k8s.io/v1
+apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   name: kafkamirrormakers.kafka.strimzi.io
   labels:
     app: '{{ template "strimzi.name" . }}'
+    strimzi.io/crd-install: "true"
     chart: '{{ template "strimzi.chart" . }}'
     component: kafkamirrormakers.kafka.strimzi.io-crd
     release: '{{ .Release.Name }}'
@@ -12,13 +13,13 @@ metadata:
 spec:
   group: kafka.strimzi.io
   versions:
-  - name: v1
+  - name: v1beta1
     served: true
     storage: true
   - name: v1alpha1
     served: true
     storage: false
-  version: v1
+  version: v1beta1
   scope: Namespaced
   names:
     kind: KafkaMirrorMaker
@@ -27,12 +28,13 @@ spec:
     plural: kafkamirrormakers
     shortNames:
     - kmm
+    categories:
+    - strimzi
   additionalPrinterColumns:
   - name: Desired replicas
-    description: The desired number of Kafka Mirror Maker replicas
+    description: The desired number of Kafka MirrorMaker replicas
     JSONPath: .spec.replicas
     type: integer
-    priority: 0
   - name: Consumer Bootstrap Servers
     description: The boostrap servers for the consumer
     JSONPath: .spec.consumer.bootstrapServers
@@ -43,6 +45,8 @@ spec:
     JSONPath: .spec.producer.bootstrapServers
     type: string
     priority: 1
+  subresources:
+    status: {}
   validation:
     openAPIV3Schema:
       properties:
@@ -62,6 +66,8 @@ spec:
                 numStreams:
                   type: integer
                   minimum: 1
+                offsetCommitInterval:
+                  type: integer
                 groupId:
                   type: string
                 bootstrapServers:
@@ -69,6 +75,18 @@ spec:
                 authentication:
                   type: object
                   properties:
+                    accessToken:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                        secretName:
+                          type: string
+                      required:
+                      - key
+                      - secretName
+                    accessTokenIsJwt:
+                      type: boolean
                     certificateAndKey:
                       type: object
                       properties:
@@ -82,6 +100,22 @@ spec:
                       - certificate
                       - key
                       - secretName
+                    clientId:
+                      type: string
+                    clientSecret:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                        secretName:
+                          type: string
+                      required:
+                      - key
+                      - secretName
+                    disableTlsHostnameVerification:
+                      type: boolean
+                    maxTokenExpirySeconds:
+                      type: integer
                     passwordSecret:
                       type: object
                       properties:
@@ -92,12 +126,37 @@ spec:
                       required:
                       - password
                       - secretName
+                    refreshToken:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                        secretName:
+                          type: string
+                      required:
+                      - key
+                      - secretName
+                    tlsTrustedCertificates:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          certificate:
+                            type: string
+                          secretName:
+                            type: string
+                        required:
+                        - certificate
+                        - secretName
+                    tokenEndpointUri:
+                      type: string
                     type:
                       type: string
                       enum:
                       - tls
                       - scram-sha-512
                       - plain
+                      - oauth
                     username:
                       type: string
                   required:
@@ -127,9 +186,23 @@ spec:
               properties:
                 bootstrapServers:
                   type: string
+                abortOnSendFailure:
+                  type: boolean
                 authentication:
                   type: object
                   properties:
+                    accessToken:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                        secretName:
+                          type: string
+                      required:
+                      - key
+                      - secretName
+                    accessTokenIsJwt:
+                      type: boolean
                     certificateAndKey:
                       type: object
                       properties:
@@ -143,6 +216,22 @@ spec:
                       - certificate
                       - key
                       - secretName
+                    clientId:
+                      type: string
+                    clientSecret:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                        secretName:
+                          type: string
+                      required:
+                      - key
+                      - secretName
+                    disableTlsHostnameVerification:
+                      type: boolean
+                    maxTokenExpirySeconds:
+                      type: integer
                     passwordSecret:
                       type: object
                       properties:
@@ -153,12 +242,37 @@ spec:
                       required:
                       - password
                       - secretName
+                    refreshToken:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                        secretName:
+                          type: string
+                      required:
+                      - key
+                      - secretName
+                    tlsTrustedCertificates:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          certificate:
+                            type: string
+                          secretName:
+                            type: string
+                        required:
+                        - certificate
+                        - secretName
+                    tokenEndpointUri:
+                      type: string
                     type:
                       type: string
                       enum:
                       - tls
                       - scram-sha-512
                       - plain
+                      - oauth
                     username:
                       type: string
                   required:
@@ -415,16 +529,25 @@ spec:
             jvmOptions:
               type: object
               properties:
-                -XX:
+                "-XX":
                   type: object
-                -Xms:
+                "-Xms":
                   type: string
                   pattern: '[0-9]+[mMgG]?'
-                -Xmx:
+                "-Xmx":
                   type: string
                   pattern: '[0-9]+[mMgG]?'
                 gcLoggingEnabled:
                   type: boolean
+                javaSystemProperties:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
             logging:
               type: object
               properties:
@@ -441,6 +564,15 @@ spec:
               - type
             metrics:
               type: object
+            tracing:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                  - jaeger
+              required:
+              - type
             template:
               type: object
               properties:
@@ -506,6 +638,13 @@ spec:
                                 type: string
                               value:
                                 type: string
+                        windowsOptions:
+                          type: object
+                          properties:
+                            gmsaCredentialSpec:
+                              type: string
+                            gmsaCredentialSpecName:
+                              type: string
                     terminationGracePeriodSeconds:
                       type: integer
                       minimum: 0
@@ -717,6 +856,10 @@ spec:
                                       type: string
                                   topologyKey:
                                     type: string
+                    priorityClassName:
+                      type: string
+                    schedulerName:
+                      type: string
                     tolerations:
                       type: array
                       items:
@@ -732,6 +875,18 @@ spec:
                             type: integer
                           value:
                             type: string
+                mirrorMakerContainer:
+                  type: object
+                  properties:
+                    env:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          value:
+                            type: string
                 podDisruptionBudget:
                   type: object
                   properties:
@@ -745,6 +900,36 @@ spec:
                     maxUnavailable:
                       type: integer
                       minimum: 0
+            livenessProbe:
+              type: object
+              properties:
+                failureThreshold:
+                  type: integer
+                initialDelaySeconds:
+                  type: integer
+                  minimum: 0
+                periodSeconds:
+                  type: integer
+                successThreshold:
+                  type: integer
+                timeoutSeconds:
+                  type: integer
+                  minimum: 0
+            readinessProbe:
+              type: object
+              properties:
+                failureThreshold:
+                  type: integer
+                initialDelaySeconds:
+                  type: integer
+                  minimum: 0
+                periodSeconds:
+                  type: integer
+                successThreshold:
+                  type: integer
+                timeoutSeconds:
+                  type: integer
+                  minimum: 0
             version:
               type: string
           required:
@@ -752,4 +937,24 @@ spec:
           - whitelist
           - consumer
           - producer
+        status:
+          type: object
+          properties:
+            conditions:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  status:
+                    type: string
+                  lastTransitionTime:
+                    type: string
+                  reason:
+                    type: string
+                  message:
+                    type: string
+            observedGeneration:
+              type: integer
 {{- end -}}

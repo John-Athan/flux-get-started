@@ -1,10 +1,11 @@
 {{- if .Values.createGlobalResources -}}
-apiVersion: apiextensions.k8s.io/v1
+apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   name: kafkausers.kafka.strimzi.io
   labels:
     app: '{{ template "strimzi.name" . }}'
+    strimzi.io/crd-install: "true"
     chart: '{{ template "strimzi.chart" . }}'
     component: kafkausers.kafka.strimzi.io-crd
     release: '{{ .Release.Name }}'
@@ -12,13 +13,13 @@ metadata:
 spec:
   group: kafka.strimzi.io
   versions:
-  - name: v1
+  - name: v1beta1
     served: true
     storage: true
   - name: v1alpha1
     served: true
     storage: false
-  version: v1
+  version: v1beta1
   scope: Namespaced
   names:
     kind: KafkaUser
@@ -27,17 +28,19 @@ spec:
     plural: kafkausers
     shortNames:
     - ku
+    categories:
+    - strimzi
   additionalPrinterColumns:
   - name: Authentication
     description: How the user is authenticated
     JSONPath: .spec.authentication.type
     type: string
-    priority: 0
   - name: Authorization
     description: How the user is authorised
     JSONPath: .spec.authorization.type
     type: string
-    priority: 0
+  subresources:
+    status: {}
   validation:
     openAPIV3Schema:
       properties:
@@ -112,6 +115,40 @@ spec:
               required:
               - acls
               - type
-          required:
-          - authentication
+            quotas:
+              type: object
+              properties:
+                consumerByteRate:
+                  type: integer
+                  minimum: 0
+                producerByteRate:
+                  type: integer
+                  minimum: 0
+                requestPercentage:
+                  type: integer
+                  minimum: 0
+        status:
+          type: object
+          properties:
+            conditions:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  status:
+                    type: string
+                  lastTransitionTime:
+                    type: string
+                  reason:
+                    type: string
+                  message:
+                    type: string
+            observedGeneration:
+              type: integer
+            username:
+              type: string
+            secret:
+              type: string
 {{- end -}}
