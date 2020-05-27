@@ -20,9 +20,7 @@ spec:
       {{ $key }}: {{ $val }}
       {{- end }}
     storage:
-      type: {{ .Values.kafka.storage.type }}
-      volumes:
-        type: ephemeral
+      type: ephemeral
     metrics:
       lowercaseOutputName: true
       rules:
