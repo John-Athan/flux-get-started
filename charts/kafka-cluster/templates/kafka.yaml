@@ -22,13 +22,7 @@ spec:
     storage:
       type: {{ .Values.kafka.storage.type }}
       volumes:
-      {{ $volumeSize := .Values.kafka.storage.size }}
-      {{ range $idx := until ( atoi .Values.kafka.storage.volumeCount ) }}
-      - id: {{ $idx }}
-        type: persistent-claim
-        size: {{ $volumeSize }}
-        deleteClaim: false
-      {{- end }}
+        type: ephemeral
     metrics:
       lowercaseOutputName: true
       rules:
@@ -152,8 +146,6 @@ spec:
       gcLoggingEnabled: false
     storage:
       type: ephemeral
-      size: {{ .Values.zookeeper.storage.size }}
-      deleteClaim: false
   entityOperator:
     topicOperator: {}
     userOperator: {}
