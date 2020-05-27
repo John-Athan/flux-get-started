@@ -11,7 +11,7 @@ spec:
     path: charts/kafka-cluster
   values:
     kafka:
-      version: 2.5.0
+      version: 2.2.1
       replicaCount: 2
       storage:
         size: "2Gi"
@@ -22,7 +22,7 @@ spec:
         transaction.max.timeout.ms: 1800000
         unclean.leader.election.enable: true
         default.replication.factor: 1
-        log.message.format.version: "2.5"
+        log.message.format.version: "2.2"
         log.message.timestamp.type: "LogAppendTime"
         log.retention.hours: 1
         log.segment.bytes: "107374182"
