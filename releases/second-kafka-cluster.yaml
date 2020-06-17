@@ -33,5 +33,5 @@ spec:
       env:
         - name: DYNAMIC_HEAP_FRACTION
           value: "0.8"
-  version: 2.2.1
+  version: 2.5.0
   whitelist: zipkin
