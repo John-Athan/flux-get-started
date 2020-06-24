@@ -15,4 +15,5 @@ spec:
       - kafka
       - second-kafka
     logLevel: INFO
+    createGlobalResources: false
 ---
