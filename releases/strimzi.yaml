@@ -14,5 +14,5 @@ spec:
     watchNamespaces:
       - kafka
     logLevel: INFO
-    createGlobalResources: true
+    createGlobalResources: false
 ---
