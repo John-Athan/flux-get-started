@@ -20,7 +20,7 @@ apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
   name: second-strimzi
-  namespace: strimzi-operator
+  namespace: second-kafka
 spec:
   releaseName: second-strimzi
   chart:
