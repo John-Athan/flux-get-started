@@ -9,27 +9,10 @@ spec:
   chart:
     repository: https://strimzi.io/charts/
     name: strimzi-kafka-operator
-    version: 0.18.0
+    version: 0.15.0
   values:
     watchNamespaces:
       - kafka
-    logLevel: INFO
-    createGlobalResources: false
----
-apiVersion: helm.fluxcd.io/v1
-kind: HelmRelease
-metadata:
-  name: second-strimzi
-  namespace: second-strimzi-operator
-spec:
-  releaseName: second-strimzi
-  chart:
-    repository: https://strimzi.io/charts/
-    name: strimzi-kafka-operator
-    version: 0.17.0
-  values:
-    watchNamespaces:
       - second-kafka
     logLevel: INFO
-    createGlobalResources: false
 ---
