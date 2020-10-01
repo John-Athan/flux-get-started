@@ -12,7 +12,7 @@ spec:
   values:
     kafka:
       version: 2.3.1
-      replicaCount: 1
+      replicaCount: 0
       storage:
         size: "2Gi"
       config:
